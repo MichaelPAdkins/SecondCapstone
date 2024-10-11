@@ -1,6 +1,6 @@
 // src/Components/Camera/CameraList.jsx
 import React, { useEffect, useState } from 'react';
-import "../../App.css"; // Adjusted to ensure global styles are applied
+import "../../App.css";
 
 const CameraList = () => {
     const [cameras, setCameras] = useState([]);
@@ -19,22 +19,6 @@ const CameraList = () => {
         }
     };
 
-    const deleteCamera = async (id) => {
-        try {
-            const response = await fetch(`https://localhost:7013/api/Camera/${id}`, {
-                method: "DELETE",
-            });
-
-            if (response.ok) {
-                fetchCameras(); // Refresh the list
-            } else {
-                console.error("Failed to delete camera");
-            }
-        } catch (error) {
-            console.error("Error deleting camera:", error);
-        }
-    };
-
     useEffect(() => {
         fetchCameras();
     }, []);
@@ -42,12 +26,13 @@ const CameraList = () => {
     return (
         <div>
             <h2>Camera List</h2>
+            {/* Debug message to indicate whether any cameras were found */}
+            {cameras.length === 0 ? <p>No cameras found.</p> : null}
             <table>
                 <thead>
                     <tr>
                         <th>ID</th>
                         <th>Name</th>
-                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -55,10 +40,6 @@ const CameraList = () => {
                         <tr key={camera.id}>
                             <td>{camera.id}</td>
                             <td>{camera.name}</td>
-                            <td>
-                                <button onClick={() => alert(`Edit Camera ${camera.id}`)}>Edit</button>
-                                <button onClick={() => deleteCamera(camera.id)}>Delete</button>
-                            </td>
                         </tr>
                     ))}
                 </tbody>

@@ -88,4 +88,38 @@ const Register = ({ setIsLoggedIn }) => {
                     />
                 </div>
                 <div>
-                    <label
+                    <label htmlFor="imageLocation">Profile Image URL</label>
+                    <input
+                        id="imageLocation"
+                        type="text"
+                        value={imageLocation}
+                        onChange={(e) => setImageLocation(e.target.value)}
+                    />
+                </div>
+                <div>
+                    <label htmlFor="password">Password</label>
+                    <input
+                        id="password"
+                        type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
+                </div>
+                <div>
+                    <label htmlFor="confirmPassword">Confirm Password</label>
+                    <input
+                        id="confirmPassword"
+                        type="password"
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                    />
+                </div>
+                <div>
+                    <button type="submit">Register</button>
+                </div>
+            </fieldset>
+        </form>
+    );
+};
+
+export default Register;
