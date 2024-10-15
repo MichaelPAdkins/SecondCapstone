@@ -1,3 +1,4 @@
+using SecondCapstone.Repositories;
 
 namespace SecondCapstone
 {
@@ -8,8 +9,15 @@ namespace SecondCapstone
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-
             builder.Services.AddControllers();
+
+            // Register repositories with the DI container.
+            builder.Services.AddTransient<IUserProfileRepository, UserProfileRepository>();
+            builder.Services.AddTransient<ICameraRepository, CameraRepository>();
+            builder.Services.AddTransient<ITagRepository, TagRepository>();
+            builder.Services.AddTransient<ILocationRepository, LocationRepository>();
+            builder.Services.AddTransient<IEntryRepository, EntryRepository>();
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -21,12 +29,17 @@ namespace SecondCapstone
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
+                app.UseCors(options =>
+                {
+                    options.AllowAnyOrigin();
+                    options.AllowAnyMethod();
+                    options.AllowAnyHeader();
+                });
             }
 
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 

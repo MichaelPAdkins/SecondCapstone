@@ -1,0 +1,39 @@
+/* src/Components/Register.css */
+
+.register-form {
+    background-color: #FFF;
+    padding: 20px;
+    border-radius: 5px;
+    width: 300px;
+    margin: 20px auto;
+    text-align: left;
+}
+
+fieldset {
+    border: none;
+}
+
+div {
+    margin-bottom: 10px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    border-radius: 3px;
+    border: 1px solid #ddd;
+}
+
+button {
+    background-color: #E30613;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: p
