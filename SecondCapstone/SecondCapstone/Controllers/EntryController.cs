@@ -57,5 +57,13 @@ namespace SecondCapstone.Controllers
             EntryRepository.Delete(id);
             return NoContent();
         }
+
+        [HttpGet("latest")]
+        public IActionResult GetLastTenEntries()
+        {
+            var entries = EntryRepository.GetLastTenEntries();
+            return Ok(entries);  // This will return the entries in JSON format
+        }
+
     }
 }
