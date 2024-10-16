@@ -145,5 +145,41 @@ namespace SecondCapstone.Repositories
                 }
             }
         }
+
+        public List<Entry> GetLastTenEntries()
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                SELECT TOP 10 * 
+                FROM Entry
+                ORDER BY CaptureDate DESC";  
+                    var reader = cmd.ExecuteReader();
+                    var entries = new List<Entry>();
+                    while (reader.Read())
+                    {
+                        var entry = new Entry()
+                        {
+                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                            FileName = reader.GetString(reader.GetOrdinal("FileName")),
+                            CaptureDate = reader.GetString(reader.GetOrdinal("CaptureDate")),
+                            FileSize = reader.GetString(reader.GetOrdinal("FileSize")),
+                            Resolution = reader.GetString(reader.GetOrdinal("Resolution")),
+                            PhysicalBackUps = reader.GetString(reader.GetOrdinal("PhysicalBackUps")),
+                            CameraId = reader.GetInt32(reader.GetOrdinal("CameraId")),
+                            UserId = reader.GetInt32(reader.GetOrdinal("UserId"))
+                        };
+                        entries.Add(entry);
+                    }
+                    reader.Close();
+                    return entries;
+                }
+            }
+        }
+
+
     }
 }

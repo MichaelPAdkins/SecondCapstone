@@ -10,5 +10,6 @@ namespace SecondCapstone.Repositories
         void Add(Entry entry);
         void Update(Entry entry);
         void Delete(int id);
+        List<Entry> GetLastTenEntries(); 
     }
 }
