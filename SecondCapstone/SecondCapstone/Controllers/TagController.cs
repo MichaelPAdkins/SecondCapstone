@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using SecondCapstone.Models;
 using SecondCapstone.Repositories;
+using System;
 
 namespace SecondCapstone.Controllers
 {
@@ -8,23 +10,26 @@ namespace SecondCapstone.Controllers
     [ApiController]
     public class TagController : ControllerBase
     {
-        private readonly ITagRepository TagRepository;
+        private readonly ITagRepository _tagRepository;
 
+        // Constructor to inject the repository using dependency injection
         public TagController(ITagRepository tagRepository)
         {
-            TagRepository = tagRepository;
+            _tagRepository = tagRepository;
         }
 
+        // GET: api/tag
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(TagRepository.GetAll());
+            return Ok(_tagRepository.GetAll());
         }
 
+        // GET: api/tag/{id}
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var tag = TagRepository.GetById(id);
+            var tag = _tagRepository.GetById(id);
             if (tag == null)
             {
                 return NotFound();
@@ -32,29 +37,47 @@ namespace SecondCapstone.Controllers
             return Ok(tag);
         }
 
+        // POST: api/tag
         [HttpPost]
-        public IActionResult Post(Tag tag)
+        public IActionResult Post([FromBody] Tag tag)
         {
-            TagRepository.Add(tag);
-            return CreatedAtAction("Get", new { id = tag.Id }, tag);
+            if (tag == null || string.IsNullOrWhiteSpace(tag.Name))
+            {
+                return BadRequest("Tag name cannot be empty.");
+            }
+
+            try
+            {
+                _tagRepository.Add(tag);
+                return CreatedAtAction(nameof(Get), new { id = tag.Id }, tag);
+            }
+catch (SqlException sqlEx)
+{
+    Console.WriteLine("SQL Error: " + sqlEx.Message);
+    Console.WriteLine("SQL Stack Trace: " + sqlEx.StackTrace);
+    return StatusCode(500, "Database error occurred while creating the tag.");
+}
         }
 
+
+        // PUT: api/tag/{id}
         [HttpPut("{id}")]
-        public IActionResult Put(int id, Tag tag)
+        public IActionResult Put(int id, [FromBody] Tag tag)
         {
             if (id != tag.Id)
             {
-                return BadRequest();
+                return BadRequest("Tag ID mismatch.");
             }
 
-            TagRepository.Update(tag);
+            _tagRepository.Update(tag);
             return NoContent();
         }
 
+        // DELETE: api/tag/{id}
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            TagRepository.Delete(id);
+            _tagRepository.Delete(id);
             return NoContent();
         }
     }
