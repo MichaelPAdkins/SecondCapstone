@@ -61,24 +61,23 @@ catch (SqlException sqlEx)
 
 
         // PUT: api/tag/{id}
-        [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] Tag tag)
-        {
-            if (id != tag.Id)
-            {
-                return BadRequest("Tag ID mismatch.");
-            }
+[HttpPut("{id}")]
+public IActionResult Put(int id, [FromBody] Tag tag)
+{
+    if (id != tag.Id)
+    {
+        return BadRequest("Tag ID mismatch.");
+    }
 
-            _tagRepository.Update(tag);
-            return NoContent();
-        }
-
-        // DELETE: api/tag/{id}
-        [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
-        {
-            _tagRepository.Delete(id);
-            return NoContent();
-        }
+    try
+    {
+        _tagRepository.Update(tag);
+        return NoContent();
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine("Error updating tag: " + ex.Message);
+        return StatusCode(500, "An error occurred while updating the tag.");
     }
 }
+

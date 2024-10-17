@@ -1,50 +1,49 @@
-import React, { useState } from 'react';
-import { addTag } from '../Services/TagServices';  // Ensure correct import path
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { addTag, getTagById, updateTag } from '../Services/TagServices'; // Assuming these functions exist
 
 const CreateTagForm = () => {
     const [tagName, setTagName] = useState('');
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    const [errorMessage, setErrorMessage] = useState('');
+    const [isEditing, setIsEditing] = useState(false);
+    const { id } = useParams(); // Get tag ID from URL if editing
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (id) {
+            setIsEditing(true);
+            getTagById(id)
+                .then((data) => {
+                    setTagName(data.name);
+                })
+                .catch((error) => console.error('Error fetching tag:', error));
+        }
+    }, [id]);
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        setErrorMessage('');
-
-        if (tagName.trim() === '') {
-            setErrorMessage('Tag name cannot be empty');
-            return;
+        const tag = { id: id, name: tagName };  // Include the tag ID if editing
+    
+        if (isEditing) {
+            updateTag(id, tag)  // Ensure the ID is being passed
+                .then((response) => {
+                    if (!response.ok) {
+                        console.error('Failed to update tag: ', response);
+                        throw new Error('Failed to update tag');
+                    }
+                    navigate('/tags/list');
+                })
+                .catch(error => console.error('Error updating tag:', error));
+        } else {
+            addTag(tag)
+                .then(() => navigate('/tags/list'))
+                .catch(error => console.error('Error creating tag:', error));
         }
-
-        const newTag = { name: tagName };  // Only send the tag name
-        console.log('Submitting tag data:', newTag);  // Log the tag data being sent
-
-        setIsSubmitting(true);
-
-        // Call the addTag function from TagServices
-        addTag(newTag)
-            .then((response) => {
-                if (!response.ok) {
-                    console.error('Failed to create tag: ', response);
-                    throw new Error('Failed to create tag');
-                }
-                return response.json();
-            })
-            .then(() => {
-                alert('Tag created successfully!');
-                setTagName('');  // Reset the input field after successful creation
-            })
-            .catch((error) => {
-                console.error('Error creating tag:', error);
-                setErrorMessage('Failed to create tag. Please try again.');
-            })
-            .finally(() => {
-                setIsSubmitting(false);
-            });
     };
+    
 
     return (
         <div>
-            <h2>Create New Tag</h2>
+            <h2>{isEditing ? 'Edit Tag' : 'Create New Tag'}</h2>
             <form onSubmit={handleSubmit}>
                 <div>
                     <label htmlFor="tagName">Tag Name:</label>
@@ -54,14 +53,11 @@ const CreateTagForm = () => {
                         value={tagName}
                         onChange={(e) => setTagName(e.target.value)}
                         placeholder="Enter tag name"
-                        disabled={isSubmitting}
+                        required
                     />
                 </div>
-                <button type="submit" disabled={isSubmitting}>
-                    {isSubmitting ? 'Creating...' : 'Create Tag'}
-                </button>
+                <button type="submit">{isEditing ? 'Update Tag' : 'Create Tag'}</button>
             </form>
-            {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
         </div>
     );
 };
