@@ -99,7 +99,7 @@ namespace SecondCapstone.Repositories
                     cmd.Parameters.AddWithValue("@physicalBackUps", entry.PhysicalBackUps);
                     cmd.Parameters.AddWithValue("@cameraId", entry.CameraId);
                     cmd.Parameters.AddWithValue("@userId", entry.UserId);
-                    
+
                     entry.Id = (int)cmd.ExecuteScalar();
                 }
             }
@@ -146,6 +146,7 @@ namespace SecondCapstone.Repositories
             }
         }
 
+        // Corrected GetLastTenEntries method
         public List<Entry> GetLastTenEntries()
         {
             using (var conn = Connection)
@@ -154,9 +155,16 @@ namespace SecondCapstone.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                SELECT TOP 10 * 
-                FROM Entry
-                ORDER BY CaptureDate DESC";  
+                        SELECT TOP 10 e.Id, e.FileName, e.CaptureDate, e.FileSize, e.Resolution, e.PhysicalBackUps,
+                            c.Name as CameraName, l.Name as LocationName, t.Name as TagName
+                        FROM Entry e
+                        LEFT JOIN Camera c ON e.CameraId = c.Id
+                        LEFT JOIN EntryLocations el ON el.EntryId = e.Id
+                        LEFT JOIN Locations l ON el.LocationsId = l.Id
+                        LEFT JOIN EntryTags et ON et.EntryId = e.Id
+                        LEFT JOIN Tags t ON et.TagId = t.Id
+                        ORDER BY e.CaptureDate DESC";
+                    
                     var reader = cmd.ExecuteReader();
                     var entries = new List<Entry>();
                     while (reader.Read())
@@ -169,9 +177,32 @@ namespace SecondCapstone.Repositories
                             FileSize = reader.GetString(reader.GetOrdinal("FileSize")),
                             Resolution = reader.GetString(reader.GetOrdinal("Resolution")),
                             PhysicalBackUps = reader.GetString(reader.GetOrdinal("PhysicalBackUps")),
-                            CameraId = reader.GetInt32(reader.GetOrdinal("CameraId")),
-                            UserId = reader.GetInt32(reader.GetOrdinal("UserId"))
+                            Camera = new Camera()
+                            {
+                                Name = reader.IsDBNull(reader.GetOrdinal("CameraName")) ? null : reader.GetString(reader.GetOrdinal("CameraName"))
+                            },
+                            EntryLocations = new List<Location>(),
+                            EntryTags = new List<Tag>()
                         };
+
+                        // Add location if available
+                        if (!reader.IsDBNull(reader.GetOrdinal("LocationName")))
+                        {
+                            entry.EntryLocations.Add(new Location
+                            {
+                                Name = reader.GetString(reader.GetOrdinal("LocationName"))
+                            });
+                        }
+
+                        // Add tag if available
+                        if (!reader.IsDBNull(reader.GetOrdinal("TagName")))
+                        {
+                            entry.EntryTags.Add(new Tag
+                            {
+                                Name = reader.GetString(reader.GetOrdinal("TagName"))
+                            });
+                        }
+
                         entries.Add(entry);
                     }
                     reader.Close();
@@ -179,7 +210,5 @@ namespace SecondCapstone.Repositories
                 }
             }
         }
-
-
     }
 }

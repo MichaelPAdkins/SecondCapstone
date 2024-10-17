@@ -165,3 +165,38 @@ h1, h2, h3, h4, h5, h6 {
 .read-the-docs {
   color: #888;
 }
+
+/* App.css */
+
+/* Style the container holding the list of entries */
+.entries-container {
+  display: flex;
+  flex-direction: column; /* Stack entries vertically */
+  justify-content: flex-start;
+  align-items: flex-start; /* Left-align the entries */
+  margin: 20px;
+}
+
+/* Style each entry item */
+.entry-item {
+  display: flex;
+  flex-direction: column; /* Stack entry elements vertically */
+  justify-content: flex-start;
+  align-items: flex-start; /* Left-align each entry */
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-bottom: 1px solid #ccc; /* A light line to separate entries */
+  white-space: normal; /* Allow text to wrap to the next line */
+  overflow: hidden;
+  text-overflow: ellipsis; /* Add "..." if text is too long */
+  word-wrap: break-word; /* Ensure long words break to the next line */
+}
+
+/* Ensure entries stretch to fit different screen widths */
+@media screen and (max-width: 768px) {
+  .entry-item {
+      flex-direction: column; /* Stack text vertically on smaller screens */
+      align-items: flex-start;
+  }
+}
