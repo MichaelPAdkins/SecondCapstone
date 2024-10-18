@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';  // Import Link for navigation
 import '../../App.css';
 
 const EntryList = () => {
@@ -23,6 +24,14 @@ const EntryList = () => {
     return (
         <div className="entries-container">
             <h2>Last 10 Entries</h2>
+
+            {/* Add Entry button */}
+            <div className="add-entry-button">
+                <Link to="/entry/create">
+                    <button>Add New Entry</button>
+                </Link>
+            </div>
+
             <ul>
                 {entries.map((entry) => (
                     <li key={entry.id} className="entry-item">

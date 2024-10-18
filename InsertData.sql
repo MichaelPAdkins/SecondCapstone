@@ -1,10 +1,13 @@
 ﻿
 -- Inserting Data into UserProfile
+set identity_insert [UserProfile] on
 INSERT INTO UserProfile (Id, DisplayName, FirstName, LastName, Email)
 VALUES 
 (1, 'MPaul', 'Michael', 'Paul', 'mostexalted@mostexalted.com');
+set identity_insert [UserProfile] off
 
 -- Inserting Data into Tags
+set identity_insert [Tags] on
 INSERT INTO Tags (Id, Name)
 VALUES 
 (1, 'bicycles'), 
@@ -107,9 +110,11 @@ VALUES
 (98, 'insects'),
 (99, 'rainy day'),
 (100, 'fog');
+set identity_insert [Tags] off
 
 
 -- Inserting Data into Camera
+set identity_insert [Camera] on
 INSERT INTO Camera (Id, Name)
 VALUES 
 (1, 'Canon 20D'),
@@ -119,8 +124,11 @@ VALUES
 (5, 'Sony A6000'),
 (6, 'Fuji X100'),
 (7, 'Olympus OM2N');
+set identity_insert [Camera] off
+
 
 -- Inserting Data into Locations
+set identity_insert [Locations] on
 INSERT INTO Locations (Id, Name)
 VALUES 
 (1, 'Huntington'),
@@ -158,9 +166,11 @@ VALUES
 (33, 'rooftop'),
 (34, 'backyard'),
 (35, 'kitchen');
+set identity_insert [Locations] off
 
 
 -- Inserting Data into Entry
+set identity_insert [Entry] on
 INSERT INTO Entry (Id, FileName, CaptureDate, FileSize, Resolution, PhysicalBackUps, CameraId, UserId)
 VALUES 
 (1, '20221013dsc7233.jpg', '10/13/2022', '19.92 MB', '6192 x 8526', 'Master 1, External Drive 1', 1, 1),
@@ -215,9 +225,11 @@ VALUES
 (50, '20180723raw7654.jpg', '07/23/2018', '19.92 MB', '6192 x 8526', 'Master 1, External Drive 3, negative sleeve 3456', 2, 1),
 (51, '20191017orf7432.jpg', '10/17/2019', '19.92 MB', '6192 x 8526', 'Master 1, External Drive 4', 3, 1),
 (52, '20210907dsc3452.jpg', '09/07/2021', '19.92 MB', '6192 x 8526', 'Master 1, External Drive 1', 4, 1);
+set identity_insert [Entry] off
 
 
 -- Inserting Data into EntryTags
+set identity_insert [EntryTags] on
 INSERT INTO EntryTags (Id, EntryId, TagId)
 VALUES 
 -- Entry 1
@@ -376,9 +388,11 @@ VALUES
 -- Entry 52
 (103, 52, 6), -- 'rain'
 (104, 52, 8); -- 'Emily'
+set identity_insert [EntryTags] off
 
 
 -- Inserting Data into EntryLocations
+set identity_insert [EntryLocations] on
 INSERT INTO EntryLocations (Id, EntryId, LocationsId)
 VALUES
 -- Entry 1
@@ -537,4 +551,5 @@ VALUES
 -- Entry 52
 (103, 52, 4), -- Los Angeles (city/state)
 (104, 52, 9); -- nightclub (general)
+set identity_insert [EntryLocations] off
 

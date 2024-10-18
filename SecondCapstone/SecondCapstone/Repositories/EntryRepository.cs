@@ -155,7 +155,7 @@ namespace SecondCapstone.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                        SELECT TOP 10 e.Id, e.FileName, e.CaptureDate, e.FileSize, e.Resolution, e.PhysicalBackUps,
+                        SELECT Top 10 e.Id, e.FileName, e.CaptureDate, e.FileSize, e.Resolution, e.PhysicalBackUps,
                             c.Name as CameraName, l.Name as LocationName, t.Name as TagName
                         FROM Entry e
                         LEFT JOIN Camera c ON e.CameraId = c.Id
@@ -163,7 +163,7 @@ namespace SecondCapstone.Repositories
                         LEFT JOIN Locations l ON el.LocationsId = l.Id
                         LEFT JOIN EntryTags et ON et.EntryId = e.Id
                         LEFT JOIN Tags t ON et.TagId = t.Id
-                        ORDER BY e.CaptureDate DESC";
+                        ORDER BY e.Id DESC";
                     
                     var reader = cmd.ExecuteReader();
                     var entries = new List<Entry>();

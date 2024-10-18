@@ -14,8 +14,8 @@ namespace SecondCapstone.Models
         public int UserId { get; set; }
 
         // Add related data properties
-        public Camera Camera { get; set; } // To hold camera details
-        public List<Location> EntryLocations { get; set; } = new List<Location>(); // To hold related locations
-        public List<Tag> EntryTags { get; set; } = new List<Tag>(); // To hold related tags
+        public Camera? Camera { get; set; } // To hold camera details
+        public List<Location>? EntryLocations { get; set; } = new List<Location>(); // To hold related locations
+        public List<Tag>? EntryTags { get; set; } = new List<Tag>(); // To hold related tags
     }
 }

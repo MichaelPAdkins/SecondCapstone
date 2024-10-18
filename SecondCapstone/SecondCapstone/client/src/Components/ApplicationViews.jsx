@@ -6,6 +6,7 @@ import LocationList from './Locations/LocationList.jsx';
 import CreateLocationForm from './Locations/CreateLocationForm.jsx';
 import TagList from './Tags/TagList.jsx';
 import CreateTagForm from './Tags/CreateTagForm.jsx';
+import EntryForm from './Entry/EntryForm.jsx';
 import Authorize from './Authorize';
 
 const ApplicationViews = () => {
@@ -13,7 +14,8 @@ const ApplicationViews = () => {
     <Routes>
       {/* Define your specific routes first */}
       <Route path="/entries/latest" element={<EntryList />} />
-      <Route path="/tags/list" element={<TagList />} />
+      <Route path="/entry/create" element={<EntryForm />} />
+    <Route path="/tags/list" element={<TagList />} />
       <Route path="/tags/create" element={<CreateTagForm />} />{" "}
       {/* Route for Create Tag */}
       {/* Route to create/edit a tag */}
