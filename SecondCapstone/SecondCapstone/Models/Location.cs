@@ -5,7 +5,7 @@ namespace SecondCapstone.Models
         public int Id { get; set; }
         public string Name { get; set; }
 
-        // Navigation properties for related entities
-        public List<EntryLocation> EntryLocations { get; set; }
+        // Marking EntryLocations as optional (it can be null)
+        public List<EntryLocation>? EntryLocations { get; set; }
     }
 }

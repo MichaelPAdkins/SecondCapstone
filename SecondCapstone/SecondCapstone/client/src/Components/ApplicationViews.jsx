@@ -1,7 +1,9 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import CameraList from './Camera/CameraList';
-import EntryList from './Entry/EntryList';  
+import EntryList from './Entry/EntryList';
+import LocationList from './Locations/LocationList.jsx';  
+import CreateLocationForm from './Locations/CreateLocationForm.jsx';
 import TagList from './Tags/TagList.jsx';
 import CreateTagForm from './Tags/CreateTagForm.jsx';
 import Authorize from './Authorize';
@@ -16,6 +18,13 @@ const ApplicationViews = () => {
       {/* Route for Create Tag */}
       {/* Route to create/edit a tag */}
       <Route path="/tags/create/:id?" element={<CreateTagForm />} />
+      <Route path="/locations" element={<LocationList />} />
+
+      <Route path="/locations/list" element={<LocationList />} />
+      <Route path="/locations/create" element={<CreateLocationForm />} />
+      {/* Route for Create Tag */}
+      {/* Route to create/edit a tag */}
+      <Route path="/locations/create/:id?" element={<CreateLocationForm />} />
       <Route path="/cameras" element={<CameraList />} />
       {/* Catch-all route for non-matching paths */}
       <Route path="/*" element={<Authorize />} />
