@@ -87,6 +87,37 @@ namespace SecondCapstone.Repositories
             }
         }
 
+public List<Location> GetBySearchQuery(string query)
+{
+    using (var conn = Connection)
+    {
+        conn.Open();
+        using (var cmd = conn.CreateCommand())
+        {
+            cmd.CommandText = @"
+                SELECT Id, Name 
+                FROM Locations 
+                WHERE Name LIKE @query";
+            cmd.Parameters.AddWithValue("@query", $"%{query}%");
+
+            var reader = cmd.ExecuteReader();
+            var locations = new List<Location>();
+            while (reader.Read())
+            {
+                locations.Add(new Location()
+                {
+                    Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                    Name = reader.GetString(reader.GetOrdinal("Name")),
+                });
+            }
+            reader.Close();
+            return locations;
+        }
+    }
+}
+
+
+        
         public void Update(Location location)
         {
             using (var conn = Connection)

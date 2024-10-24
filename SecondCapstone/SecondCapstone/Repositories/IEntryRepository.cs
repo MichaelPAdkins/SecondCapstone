@@ -10,6 +10,9 @@ namespace SecondCapstone.Repositories
         void Add(Entry entry);
         void Update(Entry entry);
         void Delete(int id);
-        List<Entry> GetLastTenEntries(); 
+        List<Entry> GetEntriesByTagId(int tagId);
+        List<Entry> GetEntriesByLocationId(int locationId);
+        List<Entry> GetEntriesByCameraId(int cameraId);
+        List<Entry> GetLastTenEntries();
     }
 }

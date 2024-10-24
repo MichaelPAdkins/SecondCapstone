@@ -5,6 +5,7 @@ namespace SecondCapstone.Repositories
 {
     public interface ICameraRepository
     {
+        List<Camera> GetBySearchQuery(string query);
         List<Camera> GetAll();
         Camera GetById(int id);
         void Add(Camera camera);

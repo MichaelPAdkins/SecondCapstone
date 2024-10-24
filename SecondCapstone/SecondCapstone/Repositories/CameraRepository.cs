@@ -106,6 +106,37 @@ namespace SecondCapstone.Repositories
             }
         }
 
+public List<Camera> GetBySearchQuery(string query)
+{
+    using (var conn = Connection)
+    {
+        conn.Open();
+        using (var cmd = conn.CreateCommand())
+        {
+            cmd.CommandText = @"
+                SELECT Id, Name 
+                FROM Camera 
+                WHERE Name LIKE @query";
+            cmd.Parameters.AddWithValue("@query", $"%{query}%");
+
+            var reader = cmd.ExecuteReader();
+            var cameras = new List<Camera>();
+            while (reader.Read())
+            {
+                cameras.Add(new Camera()
+                {
+                    Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                    Name = reader.GetString(reader.GetOrdinal("Name")),
+                });
+            }
+            reader.Close();
+            return cameras;
+        }
+    }
+}
+
+
+        
         public void Delete(int id)
         {
             using (var conn = Connection)

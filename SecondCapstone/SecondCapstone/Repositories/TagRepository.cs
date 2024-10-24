@@ -87,7 +87,7 @@ namespace SecondCapstone.Repositories
             }
         }
 
-public void Update(Tag tag)
+public List<Tag> GetBySearchQuery(string query)
 {
     using (var conn = Connection)
     {
@@ -95,16 +95,47 @@ public void Update(Tag tag)
         using (var cmd = conn.CreateCommand())
         {
             cmd.CommandText = @"
-                UPDATE Tags
-                SET Name = @name
-                WHERE Id = @id";
-            cmd.Parameters.AddWithValue("@name", tag.Name);
-            cmd.Parameters.AddWithValue("@id", tag.Id);  // Make sure ID is passed
+                SELECT Id, Name 
+                FROM Tags 
+                WHERE Name LIKE @query";
+            cmd.Parameters.AddWithValue("@query", $"%{query}%");
 
-            cmd.ExecuteNonQuery();
+            var reader = cmd.ExecuteReader();
+            var tags = new List<Tag>();
+            while (reader.Read())
+            {
+                tags.Add(new Tag()
+                {
+                    Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                    Name = reader.GetString(reader.GetOrdinal("Name")),
+                });
+            }
+            reader.Close();
+            return tags;
         }
     }
 }
+
+
+
+        public void Update(Tag tag)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                UPDATE Tags
+                SET Name = @name
+                WHERE Id = @id";
+                    cmd.Parameters.AddWithValue("@name", tag.Name);
+                    cmd.Parameters.AddWithValue("@id", tag.Id);  // Make sure ID is passed
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
 
 
         public void Delete(int id)

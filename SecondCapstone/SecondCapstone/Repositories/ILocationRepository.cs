@@ -5,6 +5,7 @@ namespace SecondCapstone.Repositories
 {
     public interface ILocationRepository
     {
+       List<Location> GetBySearchQuery(string query);
         List<Location> GetAll();
         Location GetById(int id);
         void Add(Location location);
