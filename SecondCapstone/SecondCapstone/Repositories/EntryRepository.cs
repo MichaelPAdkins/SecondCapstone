@@ -229,6 +229,41 @@ private Entry BuildEntryFromReader(SqlDataReader reader)
             }
         }
 
+        public List<Entry> GetByFileName(string fileName)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+    SELECT e.Id, e.FileName, e.CaptureDate, e.FileSize, e.Resolution, e.PhysicalBackUps, 
+           c.Name as CameraName, l.Name as LocationName, t.Name as TagName
+    FROM Entry e
+    LEFT JOIN Camera c ON e.CameraId = c.Id
+    LEFT JOIN EntryLocations el ON el.EntryId = e.Id
+    LEFT JOIN Locations l ON el.LocationsId = l.Id
+    LEFT JOIN EntryTags et ON et.EntryId = e.Id
+    LEFT JOIN Tags t ON et.TagId = t.Id
+    WHERE LOWER(e.FileName) LIKE LOWER(@fileName)";
+
+
+                    cmd.Parameters.AddWithValue("@fileName", $"%{fileName}%");
+
+                    var reader = cmd.ExecuteReader();
+                    var entries = new List<Entry>();
+
+                    while (reader.Read())
+                    {
+                        entries.Add(BuildEntryFromReader(reader));
+                    }
+                    reader.Close();
+                    return entries;
+                }
+            }
+        }
+
+
         // Get entries by TagId
         public List<Entry> GetEntriesByTagId(int tagId)
         {

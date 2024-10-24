@@ -33,6 +33,10 @@ public IActionResult Search(string query)
 {
     var entries = new List<Entry>();
 
+        // Search for entries by FileName
+    var fileNameEntries = _entryRepository.GetByFileName(query);
+    entries.AddRange(fileNameEntries);
+
     // Search for tags matching the query
     var tags = _tagRepository.GetBySearchQuery(query);
     foreach (var tag in tags)

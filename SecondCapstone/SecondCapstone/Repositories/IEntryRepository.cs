@@ -14,5 +14,6 @@ namespace SecondCapstone.Repositories
         List<Entry> GetEntriesByLocationId(int locationId);
         List<Entry> GetEntriesByCameraId(int cameraId);
         List<Entry> GetLastTenEntries();
+         List<Entry> GetByFileName(string fileName);  // <-- New method for searching by file name
     }
 }
