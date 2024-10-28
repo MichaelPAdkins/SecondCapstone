@@ -2,7 +2,7 @@
 
 /* General page styling */
 body {
-  background-color: #FAB617; /* Yellow background */
+  background-color: #2f2f2f; /* Yellow background */
   margin: 0;
   font-family: Arial, sans-serif;
 }
@@ -17,7 +17,7 @@ body {
 
 /* Navbar styling */
 .navbar {
-  background-color: #E30613; /* Red navbar */
+  background-color: #141414; /* Red navbar */
   padding: 15px;
   display: flex;
   justify-content: space-between;
@@ -45,18 +45,18 @@ table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
-  color: black; /* Set text color to black inside tables */
+  color: rgb(29, 26, 26); /* Set text color to black inside tables */
 }
 
 th, td {
-  border: 1px solid #ddd;
+  border: 1px solid #404040;
   padding: 10px;
   text-align: left;
-  color: black; /* Ensure text inside table cells is black */
+  color: yellow; /* Ensure text inside table cells is black */
 }
 
 th {
-  background-color: #f2f2f2;
+  background-color: #141414;
 }
 
 /* Button styling */
