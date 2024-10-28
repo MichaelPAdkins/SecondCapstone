@@ -17,3 +17,8 @@ export const createEntry = (entryData) => {
       return response.json();
     });
 };
+
+export const GetEntryById = (id) => {
+  return fetch(`${baseUrl}/${id}`)
+  .then(res => res.json());
+}

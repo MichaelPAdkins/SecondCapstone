@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';  // Import Link for navigation
 import '../../App.css';
+import { Entry } from './Entry.jsx';
 
 const EntryList = () => {
     const [entries, setEntries] = useState([]);
@@ -34,46 +35,7 @@ const EntryList = () => {
 
             <ul>
                 {entries.map((entry) => (
-                    <li key={entry.id} className="entry-item">
-                        <p><strong>File Name:</strong> {entry.fileName}</p>
-                        <p><strong>Capture Date:</strong> {entry.captureDate}</p>
-                        <p><strong>Resolution:</strong> {entry.resolution}</p>
-                        <p><strong>File Size:</strong> {entry.fileSize}</p>
-                        <p><strong>Physical Backups:</strong> {entry.physicalBackUps}</p>
-
-                        {/* Display Camera */}
-                        {entry.camera && (
-                            <p><strong>Camera:</strong> {entry.camera.name}</p>
-                        )}
-
-                        {/* Display EntryLocations */}
-                        {entry.entryLocations && entry.entryLocations.length > 0 ? (
-                            <div>
-                                <p><strong>Locations:</strong></p>
-                                <ul>
-                                    {entry.entryLocations.map((location, index) => (
-                                        <li key={index}>{location.name}</li>
-                                    ))}
-                                </ul>
-                            </div>
-                        ) : (
-                            <p>No locations available</p>
-                        )}
-
-                        {/* Display EntryTags */}
-                        {entry.entryTags && entry.entryTags.length > 0 ? (
-                            <div>
-                                <p><strong>Tags:</strong></p>
-                                <ul>
-                                    {entry.entryTags.map((tag, index) => (
-                                        <li key={index}>{tag.name}</li>
-                                    ))}
-                                </ul>
-                            </div>
-                        ) : (
-                            <p>No tags available</p>
-                        )}
-                    </li>
+                    <Entry entry={entry} />
                 ))}
             </ul>
         </div>
